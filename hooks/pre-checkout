@@ -12,6 +12,10 @@ TIMEOUT="${BUILDKITE_PLUGIN_GRAPHITE_CI_TIMEOUT:-30}"
 
 BODY_FILE="$(mktemp)"
 
+echo "-----> Checking token"
+echo $GRAPHITE_TOKEN
+echo "-----> Checking token"
+
 RESPONSE_CODE=$(curl -s -o "$BODY_FILE" -w "%{response_code}" \
   "$ENDPOINT/api/v1/ci/optimizer" \
   -m $TIMEOUT \
@@ -48,7 +52,7 @@ if [ $RESPONSE_CODE = "401" ]; then
 fi
 
 if [ $RESPONSE_CODE != "200" ]; then 
-  echo "Response returned a non-200 status. Skipping Graphite checks."
+  echo "Response returned a non-200 status. Skipping Graphite checks. $RESPONSE_CODE"
   exit 0
 fi
 
